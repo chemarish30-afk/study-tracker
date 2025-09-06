@@ -1,0 +1,41 @@
+{
+  "kind": "collectionType",
+  "collectionName": "study_sessions",
+  "info": {
+    "singularName": "study-session",
+    "pluralName": "study-sessions",
+    "displayName": "Study Session",
+    "description": "Student study sessions tracking"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "student": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::student.student",
+      "inversedBy": "studySessions"
+    },
+    "date": {
+      "type": "date",
+      "required": true
+    },
+    "startAt": {
+      "type": "time",
+      "required": true
+    },
+    "endAt": {
+      "type": "time",
+      "required": true
+    },
+    "minutes": {
+      "type": "integer",
+      "required": true
+    },
+    "notes": {
+      "type": "text"
+    }
+  }
+}

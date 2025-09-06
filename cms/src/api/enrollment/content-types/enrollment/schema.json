@@ -1,0 +1,36 @@
+{
+  "kind": "collectionType",
+  "collectionName": "enrollments",
+  "info": {
+    "singularName": "enrollment",
+    "pluralName": "enrollments",
+    "displayName": "Enrollment",
+    "description": "Student enrollments in exam courses"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "student": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::student.student",
+      "inversedBy": "enrollments"
+    },
+    "exam_course": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::exam-course.exam-course"
+    },
+    "enrolledAt": {
+      "type": "datetime",
+      "default": "now()"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": ["active", "completed", "paused", "cancelled"],
+      "default": "active"
+    }
+  }
+}

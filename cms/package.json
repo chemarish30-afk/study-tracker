@@ -1,0 +1,36 @@
+{
+  "name": "study-tracker-cms",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Study Tracker CMS - Strapi v4 Backend",
+  "scripts": {
+    "build": "strapi build",
+    "develop": "strapi develop",
+    "start": "strapi start",
+    "strapi": "strapi"
+  },
+  "dependencies": {
+    "@strapi/plugin-email": "4.25.5",
+    "@strapi/plugin-i18n": "4.25.5",
+    "@strapi/plugin-users-permissions": "4.25.5",
+    "@strapi/strapi": "4.25.5",
+    "nodemailer": "^7.0.6",
+    "pg": "8.11.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^5.3.4",
+    "sqlite3": "^5.1.6",
+    "styled-components": "^5.3.11"
+  },
+  "author": {
+    "name": "Study Tracker Team"
+  },
+  "strapi": {
+    "uuid": "study-tracker-cms"
+  },
+  "engines": {
+    "node": ">=18.0.0 <=20.x.x",
+    "npm": ">=6.0.0"
+  },
+  "license": "MIT"
+}

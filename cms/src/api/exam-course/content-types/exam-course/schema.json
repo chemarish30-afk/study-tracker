@@ -1,0 +1,39 @@
+{
+  "kind": "collectionType",
+  "collectionName": "exam_courses",
+  "info": {
+    "singularName": "exam-course",
+    "pluralName": "exam-courses",
+    "displayName": "Exam Course",
+    "description": "Exam courses like UPSC, TNPSC, NEET etc."
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title",
+      "required": true
+    },
+    "summary": {
+      "type": "text"
+    },
+    "order": {
+      "type": "integer",
+      "default": 1
+    },
+    "subjects": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::subject.subject",
+      "mappedBy": "exam_course"
+    }
+  }
+}
