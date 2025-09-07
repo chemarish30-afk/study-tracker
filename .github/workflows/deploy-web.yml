@@ -30,24 +30,20 @@ jobs:
           npm -v
           npx vercel --version
 
-      - name: Vercel Pull (read env & project settings)
+      - name: Vercel Pull (production)
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
           npx vercel pull --yes --environment=production --token "$VERCEL_TOKEN"
 
-      - name: Build (prebuild on CI)
+      - name: Build (prebuild for production)
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          NEXT_PUBLIC_STRAPI_URL: ${{ secrets.NEXT_PUBLIC_STRAPI_URL }}
-          STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
-          REVALIDATE_SECRET: ${{ secrets.REVALIDATE_SECRET }}
-          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-          RESEND_FROM_EMAIL: ${{ secrets.RESEND_FROM_EMAIL }}
         run: |
+          rm -rf .vercel/output
           npx vercel build --prod --token "$VERCEL_TOKEN"
 
-      - name: Deploy (use prebuilt output)
+      - name: Deploy (use prebuilt, production)
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
