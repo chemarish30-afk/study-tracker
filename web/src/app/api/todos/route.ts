@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { strapi } from '@/lib/strapi';
 
+export const dynamic = 'force-static';
+
 export async function GET() {
   try {
     const response = await strapi.getTodos();

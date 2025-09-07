@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
+
+export const dynamic = 'force-static';
 import { revalidatePath, revalidateTag } from 'next/cache';
 
 export async function POST(request: NextRequest) {
