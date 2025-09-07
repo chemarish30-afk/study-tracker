@@ -1,16 +1,11 @@
-name: Deploy to Vercel
+name: Deploy Web Frontend to Vercel
 
 on:
   push:
     branches: [ main, master ]
-    paths:
-      - 'web/**'
-      - '.github/workflows/deploy-to-vercel.yml'
   pull_request:
     branches: [ main, master ]
-    paths:
-      - 'web/**'
-      - '.github/workflows/deploy-to-vercel.yml'
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -28,17 +23,22 @@ jobs:
           cache-dependency-path: web/package-lock.json
 
       - name: Install dependencies
-        run: |
-          cd web
-          npm ci
+        working-directory: ./web
+        run: npm ci
+
+      - name: Run linting
+        working-directory: ./web
+        run: npm run lint
 
       - name: Build application
-        run: |
-          cd web
-          npm run build
+        working-directory: ./web
+        run: npm run build
         env:
-          # Add any environment variables needed for build
-          # NODE_ENV: production
+          NEXT_PUBLIC_STRAPI_URL: ${{ secrets.NEXT_PUBLIC_STRAPI_URL }}
+          STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
+          REVALIDATE_SECRET: ${{ secrets.REVALIDATE_SECRET }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          RESEND_FROM_EMAIL: ${{ secrets.RESEND_FROM_EMAIL }}
 
       - name: Deploy to Vercel
         uses: amondnet/vercel-action@v25
