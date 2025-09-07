@@ -1,17 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { strapi } from '@/lib/strapi';
 
-export const dynamic = 'force-static';
-
-export async function generateStaticParams() {
-  // For static export, we'll generate a few common IDs
-  // In a real app, you might want to fetch actual todo IDs from your API
-  return [
-    { id: '1' },
-    { id: '2' },
-    { id: '3' },
-  ];
-}
 
 export async function PUT(
   request: NextRequest,

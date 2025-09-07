@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { strapi } from '@/lib/strapi';
-
-export const dynamic = 'force-static';
 import { SignUpForm, StrapiAuthResponse } from '@/types';
 
 export async function POST(request: NextRequest) {
