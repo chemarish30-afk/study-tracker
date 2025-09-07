@@ -20,12 +20,8 @@ jobs:
           echo "VERCEL_USER_ID exists: ${{ secrets.VERCEL_USER_ID != '' }}"
           echo "VERCEL_PROJECT_ID exists: ${{ secrets.VERCEL_PROJECT_ID != '' }}"
           echo "Working directory: $(pwd)"
-          echo "Contents of root:"
-          ls -la
           echo "Contents of web/:"
           ls -la web/
-          echo "Checking package.json in web/:"
-          cat web/package.json | head -10
           echo "=================="
 
       - name: Deploy to Vercel
