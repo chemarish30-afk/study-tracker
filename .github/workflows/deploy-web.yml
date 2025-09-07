@@ -1,4 +1,4 @@
-name: Deploy to Vercel
+name: Deploy Web to Vercel
 
 on:
   push:
@@ -8,37 +8,47 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
+
+    defaults:
+      run:
+        working-directory: web
+
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Use Node.js 20
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: 20
           cache: 'npm'
           cache-dependency-path: web/package-lock.json
 
-      - name: Install dependencies
-        working-directory: ./web
-        run: npm ci
+      - name: Print versions (sanity)
+        run: |
+          node -v
+          npm -v
+          npx vercel --version
 
-      - name: Run linting
-        working-directory: ./web
-        run: npm run lint
-
-      - name: Deploy to Vercel
-        uses: amondnet/vercel-action@v25
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          working-directory: ./web
-          vercel-args: '--prod'
+      - name: Vercel Pull (read env & project settings)
         env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          npx vercel pull --yes --environment=production --token "$VERCEL_TOKEN"
+
+      - name: Build (prebuild on CI)
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           NEXT_PUBLIC_STRAPI_URL: ${{ secrets.NEXT_PUBLIC_STRAPI_URL }}
           STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
           REVALIDATE_SECRET: ${{ secrets.REVALIDATE_SECRET }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           RESEND_FROM_EMAIL: ${{ secrets.RESEND_FROM_EMAIL }}
+        run: |
+          npx vercel build --token "$VERCEL_TOKEN"
+
+      - name: Deploy (use prebuilt output)
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          npx vercel deploy --prebuilt --prod --token "$VERCEL_TOKEN"
