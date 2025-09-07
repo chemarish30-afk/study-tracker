@@ -13,6 +13,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Debug Environment
+        run: |
+          echo "=== DEBUG INFO ==="
+          echo "VERCEL_TOKEN exists: ${{ secrets.VERCEL_TOKEN != '' }}"
+          echo "VERCEL_USER_ID exists: ${{ secrets.VERCEL_USER_ID != '' }}"
+          echo "VERCEL_PROJECT_ID exists: ${{ secrets.VERCEL_PROJECT_ID != '' }}"
+          echo "Working directory: $(pwd)"
+          echo "Contents of web/:"
+          ls -la web/
+          echo "=================="
+
       - name: Deploy to Vercel
         uses: amondnet/vercel-action@v25
         with:
@@ -20,4 +31,4 @@ jobs:
           vercel-org-id: ${{ secrets.VERCEL_USER_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
           working-directory: web
-          vercel-args: '--prod'
+          vercel-args: '--prod --debug'
