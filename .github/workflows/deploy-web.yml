@@ -41,6 +41,7 @@ jobs:
           RESEND_FROM_EMAIL: ${{ secrets.RESEND_FROM_EMAIL }}
 
       - name: Deploy to Vercel
+        if: ${{ secrets.VERCEL_TOKEN != '' && secrets.VERCEL_ORG_ID != '' && secrets.VERCEL_PROJECT_ID != '' }}
         uses: amondnet/vercel-action@v25
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
@@ -48,3 +49,16 @@ jobs:
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
           working-directory: ./web
           vercel-args: '--prod'
+
+      - name: Vercel Deployment Skipped
+        if: ${{ secrets.VERCEL_TOKEN == '' || secrets.VERCEL_ORG_ID == '' || secrets.VERCEL_PROJECT_ID == '' }}
+        run: |
+          echo "⚠️ Vercel deployment skipped - missing required secrets:"
+          echo "   VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN != '' && '✅ Set' || '❌ Missing' }}"
+          echo "   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID != '' && '✅ Set' || '❌ Missing' }}"
+          echo "   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID != '' && '✅ Set' || '❌ Missing' }}"
+          echo ""
+          echo "📖 To enable Vercel deployment:"
+          echo "   1. Go to your repository Settings → Secrets and variables → Actions"
+          echo "   2. Add the required Vercel secrets"
+          echo "   3. See DEPLOYMENT.md for detailed setup instructions"
