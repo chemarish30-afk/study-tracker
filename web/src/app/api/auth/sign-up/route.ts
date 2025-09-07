@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { strapi } from '@/lib/strapi';
-import { SignUpForm } from '@/types';
+import { SignUpForm, StrapiAuthResponse } from '@/types';
 
 export async function POST(request: NextRequest) {
   try {
@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { jwt, user } = (response as any).data;
+    const { jwt, user } = (response as StrapiAuthResponse).data;
 
     // Set JWT as HttpOnly cookie
     const nextResponse = NextResponse.json(

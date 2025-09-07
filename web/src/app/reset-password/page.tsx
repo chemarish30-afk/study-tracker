@@ -60,7 +60,7 @@ function ResetPasswordFormComponent() {
       } else {
         setError(data.error || 'Failed to reset password');
       }
-    } catch (error) {
+    } catch {
       setError('An error occurred. Please try again.');
     } finally {
       setLoading(false);

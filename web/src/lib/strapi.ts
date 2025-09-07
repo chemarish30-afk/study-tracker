@@ -20,7 +20,7 @@ export interface StrapiError {
     status: number;
     name: string;
     message: string;
-    details?: any;
+    details?: unknown;
   };
 }
 
@@ -163,7 +163,7 @@ export class StrapiClient {
 
   // Content methods
   async getExamCourses(params?: {
-    filters?: Record<string, any>;
+    filters?: Record<string, unknown>;
     populate?: string;
     sort?: string;
   }) {
@@ -188,7 +188,7 @@ export class StrapiClient {
   }
 
   async getSubjects(params?: {
-    filters?: Record<string, any>;
+    filters?: Record<string, unknown>;
     populate?: string;
     sort?: string;
   }) {
@@ -213,7 +213,7 @@ export class StrapiClient {
   }
 
   async getUnits(params?: {
-    filters?: Record<string, any>;
+    filters?: Record<string, unknown>;
     populate?: string;
     sort?: string;
   }) {
@@ -238,7 +238,7 @@ export class StrapiClient {
   }
 
   async getChapters(params?: {
-    filters?: Record<string, any>;
+    filters?: Record<string, unknown>;
     populate?: string;
     sort?: string;
   }) {
@@ -263,7 +263,7 @@ export class StrapiClient {
   }
 
   async getModules(params?: {
-    filters?: Record<string, any>;
+    filters?: Record<string, unknown>;
     populate?: string;
     sort?: string;
   }) {
@@ -288,7 +288,7 @@ export class StrapiClient {
   }
 
   async getContents(params?: {
-    filters?: Record<string, any>;
+    filters?: Record<string, unknown>;
     populate?: string;
     sort?: string;
   }) {
@@ -317,14 +317,14 @@ export class StrapiClient {
     return this.request('/students?populate=*');
   }
 
-  async createStudent(studentData: any) {
+  async createStudent(studentData: Record<string, unknown>) {
     return this.request('/students', {
       method: 'POST',
       body: JSON.stringify({ data: studentData }),
     });
   }
 
-  async updateStudent(id: number, studentData: any) {
+  async updateStudent(id: number, studentData: Record<string, unknown>) {
     return this.request(`/students/${id}`, {
       method: 'PUT',
       body: JSON.stringify({ data: studentData }),
@@ -335,7 +335,7 @@ export class StrapiClient {
     return this.request('/enrollments?populate=*');
   }
 
-  async createEnrollment(enrollmentData: any) {
+  async createEnrollment(enrollmentData: Record<string, unknown>) {
     return this.request('/enrollments', {
       method: 'POST',
       body: JSON.stringify({ data: enrollmentData }),
@@ -346,7 +346,7 @@ export class StrapiClient {
     return this.request('/study-sessions?populate=*');
   }
 
-  async createStudySession(sessionData: any) {
+  async createStudySession(sessionData: Record<string, unknown>) {
     return this.request('/study-sessions', {
       method: 'POST',
       body: JSON.stringify({ data: sessionData }),
@@ -357,14 +357,14 @@ export class StrapiClient {
     return this.request('/todos?populate=*');
   }
 
-  async createTodo(todoData: any) {
+  async createTodo(todoData: Record<string, unknown>) {
     return this.request('/todos', {
       method: 'POST',
       body: JSON.stringify({ data: todoData }),
     });
   }
 
-  async updateTodo(id: number, todoData: any) {
+  async updateTodo(id: number, todoData: Record<string, unknown>) {
     return this.request(`/todos/${id}`, {
       method: 'PUT',
       body: JSON.stringify({ data: todoData }),
@@ -381,14 +381,14 @@ export class StrapiClient {
     return this.request('/progresses?populate=*');
   }
 
-  async createProgress(progressData: any) {
+  async createProgress(progressData: Record<string, unknown>) {
     return this.request('/progresses', {
       method: 'POST',
       body: JSON.stringify({ data: progressData }),
     });
   }
 
-  async updateProgress(id: number, progressData: any) {
+  async updateProgress(id: number, progressData: Record<string, unknown>) {
     return this.request(`/progresses/${id}`, {
       method: 'PUT',
       body: JSON.stringify({ data: progressData }),

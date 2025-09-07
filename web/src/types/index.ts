@@ -1,7 +1,7 @@
 // Strapi base types
 export interface StrapiEntity {
   id: number;
-  attributes: Record<string, any>;
+  attributes: Record<string, unknown>;
   meta?: {
     pagination?: {
       page: number;
@@ -216,6 +216,10 @@ export interface User {
 export interface AuthResponse {
   jwt: string;
   user: User;
+}
+
+export interface StrapiAuthResponse {
+  data: AuthResponse;
 }
 
 // Form types

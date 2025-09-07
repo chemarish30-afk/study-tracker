@@ -5,15 +5,11 @@ export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const token = request.cookies.get('jwt')?.value;
 
-  // Public routes that don't require authentication
-  const publicRoutes = ['/', '/sign-in', '/sign-up', '/forgot-password', '/reset-password'];
-  
   // Protected routes that require authentication
   const protectedRoutes = ['/dashboard', '/welcome', '/onboarding', '/courses', '/profile'];
 
   // Check if the current path is a protected route
   const isProtectedRoute = protectedRoutes.some(route => pathname.startsWith(route));
-  const isPublicRoute = publicRoutes.some(route => pathname === route);
 
   // If accessing a protected route without a token, redirect to sign-in
   if (isProtectedRoute && !token) {

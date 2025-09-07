@@ -184,7 +184,7 @@ export default function DashboardPage() {
                 {Math.floor(getWeeklyStudyTime() / 60)}h {getWeeklyStudyTime() % 60}m
               </div>
               <p className="text-sm text-gray-600 mt-1">
-                This week's total study time
+                This week&apos;s total study time
               </p>
             </CardContent>
           </Card>

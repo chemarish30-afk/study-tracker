@@ -5,7 +5,7 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const populate = searchParams.get('populate');
-    const filters: Record<string, any> = {};
+    const filters: Record<string, unknown> = {};
     
     // Parse filters from query parameters
     for (const [key, value] of searchParams.entries()) {
