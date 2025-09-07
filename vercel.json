@@ -1,9 +1,9 @@
 {
-  "buildCommand": "npm run build",
-  "outputDirectory": ".next",
+  "buildCommand": "cd web && npm run build",
+  "outputDirectory": "web/.next",
   "framework": "nextjs",
-  "installCommand": "npm ci",
-  "devCommand": "npm run dev",
+  "installCommand": "cd web && npm ci",
+  "devCommand": "cd web && npm run dev",
   "regions": ["iad1"],
   "functions": {
     "web/src/app/api/**/*.ts": {
