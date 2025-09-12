@@ -67,7 +67,8 @@ export default function SignUpPage() {
           setSuccess('Account created successfully! Please check your email and click the confirmation link to activate your account.');
         }
       } else {
-        console.error('Strapi error:', data);
+        console.error('Strapi error details:', JSON.stringify(data, null, 2));
+        console.error('Error object:', data.error);
         setError(data.error?.message || data.message || 'Sign up failed');
       }
     } catch (error) {
