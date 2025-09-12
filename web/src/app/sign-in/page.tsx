@@ -26,7 +26,7 @@ export default function SignInPage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          identifier: formData.email,
+          identifier: formData.identifier,
           password: formData.password,
         }),
       });
