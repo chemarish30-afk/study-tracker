@@ -10,11 +10,11 @@ module.exports = ({ env }) => ({
     email: {
       emailConfirmation: {
         enabled: true,
-        redirection: 'https://your-netlify-site.netlify.app/auth/email-confirmation',
+        redirection: 'https://study-tracker-nextjs.netlify.app/auth/email-confirmation',
       },
       resetPassword: {
         enabled: true,
-        redirection: 'https://your-netlify-site.netlify.app/auth/reset-password',
+        redirection: 'https://study-tracker-nextjs.netlify.app/auth/reset-password',
       },
     },
   },

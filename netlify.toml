@@ -6,7 +6,7 @@
 [build.environment]
   NODE_VERSION = "20"
   NEXT_PUBLIC_STRAPI_URL = "https://truthful-gift-3408f45803.strapiapp.com"
-  NEXT_PUBLIC_SITE_URL = "https://your-netlify-site.netlify.app"
+  NEXT_PUBLIC_SITE_URL = "https://study-tracker-nextjs.netlify.app"
 
 # Handle client-side routing
 [[redirects]]
