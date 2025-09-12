@@ -1,19 +1,21 @@
 'use client';
 
-import { useState, useEffect, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
-function EmailConfirmationContent() {
+export default function EmailConfirmationPage() {
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
   const [message, setMessage] = useState('');
-  const searchParams = useSearchParams();
 
   useEffect(() => {
     const confirmEmail = async () => {
       try {
-        const confirmation = searchParams.get('confirmation');
-        const code = searchParams.get('code');
+        // Get URL parameters from window.location
+        const urlParams = new URLSearchParams(window.location.search);
+        const confirmation = urlParams.get('confirmation');
+        const code = urlParams.get('code');
+
+        console.log('Email confirmation params:', { confirmation, code });
 
         if (!confirmation || !code) {
           setStatus('error');
@@ -30,22 +32,24 @@ function EmailConfirmationContent() {
         });
 
         const data = await response.json();
+        console.log('Email confirmation response:', data);
 
         if (response.ok) {
           setStatus('success');
           setMessage('Email confirmed successfully! You can now sign in to your account.');
         } else {
           setStatus('error');
-          setMessage(data.error || 'Email confirmation failed. Please try again.');
+          setMessage(data.error?.message || data.message || 'Email confirmation failed. Please try again.');
         }
       } catch (error) {
+        console.error('Email confirmation error:', error);
         setStatus('error');
         setMessage('An error occurred during email confirmation. Please try again.');
       }
     };
 
     confirmEmail();
-  }, [searchParams]);
+  }, []);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -99,17 +103,5 @@ function EmailConfirmationContent() {
         </div>
       </div>
     </div>
-  );
-}
-
-export default function EmailConfirmationPage() {
-  return (
-    <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
-      </div>
-    }>
-      <EmailConfirmationContent />
-    </Suspense>
   );
 }
