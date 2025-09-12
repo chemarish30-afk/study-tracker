@@ -20,25 +20,33 @@ export default function SignInPage() {
     setError('');
 
     try {
+      const requestBody = {
+        identifier: formData.identifier,
+        password: formData.password,
+      };
+      
+      console.log('Sign-in request:', requestBody);
+      
       const response = await fetch(`https://truthful-gift-3408f45803.strapiapp.com/api/auth/local`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          identifier: formData.identifier,
-          password: formData.password,
-        }),
+        body: JSON.stringify(requestBody),
       });
 
       const data = await response.json();
+      console.log('Sign-in response:', data);
+      console.log('Sign-in status:', response.status);
 
       if (response.ok) {
         router.push('/welcome');
       } else {
-        setError(data.error || 'Sign in failed');
+        console.error('Sign-in error details:', JSON.stringify(data, null, 2));
+        setError(data.error?.message || data.message || 'Sign in failed');
       }
-    } catch {
+    } catch (error) {
+      console.error('Sign-in error:', error);
       setError('An error occurred. Please try again.');
     } finally {
       setLoading(false);
