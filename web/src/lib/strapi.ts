@@ -122,6 +122,7 @@ export class StrapiClient {
     username: string;
     email: string;
     password: string;
+    email_confirmation_redirection?: string;
   }) {
     return this.request('/auth/local/register', {
       method: 'POST',

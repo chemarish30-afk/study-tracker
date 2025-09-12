@@ -14,12 +14,14 @@ export default function SignUpPage() {
     confirmPassword: '',
   });
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError('');
+    setSuccess('');
 
     if (formData.password !== formData.confirmPassword) {
       setError('Passwords do not match');
@@ -50,7 +52,14 @@ export default function SignUpPage() {
       const data = await response.json();
 
       if (response.ok) {
-        router.push('/welcome');
+        // Check if JWT is present (user confirmed immediately) or needs email confirmation
+        if (data.jwt) {
+          // User is confirmed and logged in
+          router.push('/welcome');
+        } else {
+          // User needs to confirm email
+          setSuccess('Account created successfully! Please check your email and click the confirmation link to activate your account.');
+        }
       } else {
         setError(data.error || 'Sign up failed');
       }
@@ -88,6 +97,13 @@ export default function SignUpPage() {
                   💡 This usually means the backend server is not running or not properly configured.
                 </div>
               )}
+            </div>
+          )}
+          
+          {success && (
+            <div className="bg-green-50 border border-green-200 text-green-600 px-4 py-3 rounded-lg">
+              <div className="font-medium">Success!</div>
+              <div className="text-sm mt-1">{success}</div>
             </div>
           )}
           <div className="space-y-4">

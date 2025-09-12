@@ -41,7 +41,16 @@ export async function POST(request: NextRequest) {
     }
 
     console.log('Calling Strapi register...');
-    const response = await strapi.register({ username, email, password });
+    
+    // Add email confirmation redirection URL
+    const registerData = {
+      username,
+      email,
+      password,
+      email_confirmation_redirection: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://your-netlify-site.netlify.app'}/auth/email-confirmation`
+    };
+    
+    const response = await strapi.register(registerData);
     console.log('Strapi response:', response);
 
     if ('error' in response) {
