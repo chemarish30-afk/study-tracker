@@ -20,6 +20,7 @@ jobs:
       - name: Trigger Netlify Build
         uses: nwtgck/actions-netlify@v3.0
         with:
+          publish-dir: './web'
           production-branch: main
           github-token: ${{ secrets.GITHUB_TOKEN }}
           deploy-message: "Deploy from GitHub Actions - ${{ github.sha }}"
