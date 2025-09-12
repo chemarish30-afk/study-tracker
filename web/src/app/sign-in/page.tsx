@@ -20,12 +20,15 @@ export default function SignInPage() {
     setError('');
 
     try {
-      const response = await fetch('/api/auth/sign-in', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/auth/local`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          identifier: formData.email,
+          password: formData.password,
+        }),
       });
 
       const data = await response.json();

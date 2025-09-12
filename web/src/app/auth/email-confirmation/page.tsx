@@ -21,7 +21,7 @@ function EmailConfirmationContent() {
           return;
         }
 
-        const response = await fetch('/api/auth/email-confirmation', {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/auth/email-confirmation`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
