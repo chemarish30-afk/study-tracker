@@ -20,8 +20,16 @@ export default function EmailConfirmationPage() {
         const hash = urlParams.get('hash');
         const id = urlParams.get('id');
 
+        console.log('Current URL:', window.location.href);
+        console.log('URL pathname:', window.location.pathname);
+        console.log('URL search:', window.location.search);
         console.log('All URL params:', Object.fromEntries(urlParams.entries()));
         console.log('Email confirmation params:', { confirmation, code, token, hash, id });
+
+        // Check if token is in the URL path (e.g., /auth/email-confirmation/TOKEN)
+        const pathParts = window.location.pathname.split('/');
+        const possibleToken = pathParts[pathParts.length - 1];
+        console.log('Possible token from path:', possibleToken);
 
         // Try different parameter combinations
         let requestBody = {};
@@ -32,6 +40,9 @@ export default function EmailConfirmationPage() {
           requestBody = { token };
         } else if (hash && id) {
           requestBody = { hash, id };
+        } else if (possibleToken && possibleToken !== 'email-confirmation') {
+          // Token might be in the URL path
+          requestBody = { confirmation: possibleToken };
         } else {
           setStatus('error');
           setMessage('Invalid confirmation link. Please check your email and try again.');
