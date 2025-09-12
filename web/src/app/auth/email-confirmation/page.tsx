@@ -14,21 +14,38 @@ export default function EmailConfirmationPage() {
         const urlParams = new URLSearchParams(window.location.search);
         const confirmation = urlParams.get('confirmation');
         const code = urlParams.get('code');
+        
+        // Also check for other possible parameter names
+        const token = urlParams.get('token');
+        const hash = urlParams.get('hash');
+        const id = urlParams.get('id');
 
-        console.log('Email confirmation params:', { confirmation, code });
+        console.log('All URL params:', Object.fromEntries(urlParams.entries()));
+        console.log('Email confirmation params:', { confirmation, code, token, hash, id });
 
-        if (!confirmation || !code) {
+        // Try different parameter combinations
+        let requestBody = {};
+        
+        if (confirmation && code) {
+          requestBody = { confirmation, code };
+        } else if (token) {
+          requestBody = { token };
+        } else if (hash && id) {
+          requestBody = { hash, id };
+        } else {
           setStatus('error');
           setMessage('Invalid confirmation link. Please check your email and try again.');
           return;
         }
+
+        console.log('Sending to Strapi:', requestBody);
 
         const response = await fetch(`https://truthful-gift-3408f45803.strapiapp.com/api/auth/email-confirmation`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ confirmation, code }),
+          body: JSON.stringify(requestBody),
         });
 
         const data = await response.json();
