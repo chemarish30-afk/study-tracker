@@ -1,13 +1,12 @@
 'use client';
 
-import { useState, useEffect, Suspense } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ResetPasswordForm as ResetPasswordFormType } from '@/types';
 
-function ResetPasswordFormComponent() {
+export default function ResetPasswordPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const [formData, setFormData] = useState<ResetPasswordFormType>({
     code: '',
     password: '',
@@ -18,11 +17,13 @@ function ResetPasswordFormComponent() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const code = searchParams.get('code');
+    // Get URL parameters from window.location for static export compatibility
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('code');
     if (code) {
       setFormData(prev => ({ ...prev, code }));
     }
-  }, [searchParams]);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,15 +43,25 @@ function ResetPasswordFormComponent() {
     }
 
     try {
-      const response = await fetch('/api/auth/reset-password', {
+      const requestBody = {
+        code: formData.code,
+        password: formData.password,
+        passwordConfirmation: formData.passwordConfirmation
+      };
+
+      console.log('Sending reset password request to Strapi:', requestBody);
+
+      const response = await fetch('https://truthful-gift-3408f45803.strapiapp.com/api/auth/reset-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(requestBody),
       });
 
       const data = await response.json();
+      console.log('Reset password response:', data);
+      console.log('Response status:', response.status);
 
       if (response.ok) {
         setSuccess(true);
@@ -58,9 +69,11 @@ function ResetPasswordFormComponent() {
           router.push('/sign-in');
         }, 2000);
       } else {
-        setError(data.error || 'Failed to reset password');
+        console.error('Reset password error details:', JSON.stringify(data, null, 2));
+        setError(data.error?.message || data.message || 'Failed to reset password');
       }
-    } catch {
+    } catch (error) {
+      console.error('Reset password error:', error);
       setError('An error occurred. Please try again.');
     } finally {
       setLoading(false);
@@ -175,13 +188,5 @@ function ResetPasswordFormComponent() {
         </form>
       </div>
     </div>
-  );
-}
-
-export default function ResetPasswordPage() {
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <ResetPasswordFormComponent />
-    </Suspense>
   );
 }

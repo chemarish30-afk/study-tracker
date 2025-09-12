@@ -18,22 +18,33 @@ export default function ForgotPasswordPage() {
     setError('');
 
     try {
-      const response = await fetch('/api/auth/forgot-password', {
+      const requestBody = {
+        email: formData.email,
+        url: 'https://study-tracker-nextjs.netlify.app/reset-password'
+      };
+
+      console.log('Sending forgot password request to Strapi:', requestBody);
+
+      const response = await fetch('https://truthful-gift-3408f45803.strapiapp.com/api/auth/forgot-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(requestBody),
       });
 
       const data = await response.json();
+      console.log('Forgot password response:', data);
+      console.log('Response status:', response.status);
 
       if (response.ok) {
         setSuccess(true);
       } else {
-        setError(data.error || 'Failed to send reset email');
+        console.error('Forgot password error details:', JSON.stringify(data, null, 2));
+        setError(data.error?.message || data.message || 'Failed to send reset email');
       }
-    } catch {
+    } catch (error) {
+      console.error('Forgot password error:', error);
       setError('An error occurred. Please try again.');
     } finally {
       setLoading(false);
