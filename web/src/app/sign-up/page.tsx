@@ -36,20 +36,26 @@ export default function SignUpPage() {
     }
 
     try {
+      const requestBody = {
+        username: formData.username,
+        email: formData.email,
+        password: formData.password,
+        email_confirmation_redirection: `https://study-tracker-nextjs.netlify.app/auth/email-confirmation`
+      };
+      
+      console.log('Sending to Strapi:', requestBody);
+      
       const response = await fetch(`https://truthful-gift-3408f45803.strapiapp.com/api/auth/local/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          username: formData.username,
-          email: formData.email,
-          password: formData.password,
-          email_confirmation_redirection: `https://study-tracker-nextjs.netlify.app/auth/email-confirmation`
-        }),
+        body: JSON.stringify(requestBody),
       });
 
       const data = await response.json();
+      console.log('Strapi response:', data);
+      console.log('Response status:', response.status);
 
       if (response.ok) {
         // Check if JWT is present (user confirmed immediately) or needs email confirmation
@@ -61,9 +67,11 @@ export default function SignUpPage() {
           setSuccess('Account created successfully! Please check your email and click the confirmation link to activate your account.');
         }
       } else {
-        setError(data.error || 'Sign up failed');
+        console.error('Strapi error:', data);
+        setError(data.error?.message || data.message || 'Sign up failed');
       }
-    } catch {
+    } catch (error) {
+      console.error('Sign-up error:', error);
       setError('An error occurred. Please try again.');
     } finally {
       setLoading(false);
