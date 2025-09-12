@@ -32,8 +32,8 @@ export default function EmailConfirmationPage() {
         console.log('Possible token from path:', possibleToken);
 
         // Try different parameter combinations
-        let requestBody = {};
-        
+        let requestBody: Record<string, string> = {};
+
         if (confirmation && code) {
           requestBody = { confirmation, code };
         } else if (token) {
