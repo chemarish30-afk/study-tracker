@@ -81,7 +81,13 @@ export default function SignUpPage() {
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           {error && (
             <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg">
-              {error}
+              <div className="font-medium">Sign up failed</div>
+              <div className="text-sm mt-1">{error}</div>
+              {error.includes('Backend service') && (
+                <div className="text-xs mt-2 text-red-500">
+                  💡 This usually means the backend server is not running or not properly configured.
+                </div>
+              )}
             </div>
           )}
           <div className="space-y-4">

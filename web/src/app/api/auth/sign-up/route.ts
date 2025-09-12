@@ -31,14 +31,36 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Check if Strapi URL is configured
+    if (!process.env.NEXT_PUBLIC_STRAPI_URL) {
+      console.error('NEXT_PUBLIC_STRAPI_URL is not configured');
+      return NextResponse.json(
+        { error: 'Backend service is not configured. Please contact support.' },
+        { status: 503 }
+      );
+    }
+
     console.log('Calling Strapi register...');
     const response = await strapi.register({ username, email, password });
     console.log('Strapi response:', response);
 
     if ('error' in response) {
       console.log('Strapi error:', response.error);
+      
+      // Provide more specific error messages
+      let errorMessage = response.error.message;
+      if (response.error.status === 400) {
+        if (errorMessage.includes('email')) {
+          errorMessage = 'This email is already registered. Please use a different email or try signing in.';
+        } else if (errorMessage.includes('username')) {
+          errorMessage = 'This username is already taken. Please choose a different username.';
+        }
+      } else if (response.error.status >= 500) {
+        errorMessage = 'Backend service is temporarily unavailable. Please try again later.';
+      }
+      
       return NextResponse.json(
-        { error: response.error.message },
+        { error: errorMessage },
         { status: response.error.status }
       );
     }
@@ -62,8 +84,17 @@ export async function POST(request: NextRequest) {
     return nextResponse;
   } catch (error) {
     console.error('Sign-up error:', error);
+    
+    // Check if it's a network error
+    if (error instanceof Error && error.message.includes('fetch')) {
+      return NextResponse.json(
+        { error: 'Unable to connect to the server. Please check your internet connection and try again.' },
+        { status: 503 }
+      );
+    }
+    
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'An unexpected error occurred. Please try again.' },
       { status: 500 }
     );
   }
