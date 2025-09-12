@@ -35,7 +35,7 @@ module.exports = (plugin) => {
       html: `
         <h1>Welcome to Study Tracker!</h1>
         <p>Please click the link below to confirm your email address:</p>
-        <a href="${process.env.FRONTEND_URL || 'http://localhost:3000'}/auth/email-confirmation?confirmation=${confirmationToken}">
+        <a href="https://study-tracker-nextjs.netlify.app/auth/email-confirmation?confirmation=${confirmationToken}">
           Confirm Email
         </a>
         <p>If you didn't create an account, please ignore this email.</p>
