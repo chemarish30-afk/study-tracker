@@ -8,7 +8,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center">
-              <h1 className="text-xl font-bold text-gray-900">Study Tracker 🌟</h1>
+              <h1 className="text-xl font-bold text-gray-900">Study Tracker 🌟 <span className="text-sm text-green-600">v2.0</span></h1>
             </div>
             <div className="flex items-center space-x-4">
               <Link
@@ -35,6 +35,9 @@ export default function HomePage() {
             Master Your
             <span className="text-blue-600"> Competitive Exams</span>
           </h1>
+          <div className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800 mb-4">
+            🚀 Latest Update: Enhanced Dashboard & Progress Tracking
+          </div>
           <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
             Track your study progress, manage your learning journey, and achieve your goals with our comprehensive study tracking platform.
           </p>
@@ -182,6 +185,9 @@ export default function HomePage() {
             <p className="text-gray-400">
               Empowering students to achieve their competitive exam goals
             </p>
+            <div className="mt-4 text-sm text-gray-500">
+              Deployed with ❤️ via GitHub Actions & Netlify
+            </div>
           </div>
         </div>
       </footer>
