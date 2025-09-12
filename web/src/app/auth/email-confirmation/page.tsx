@@ -21,7 +21,7 @@ function EmailConfirmationContent() {
           return;
         }
 
-        const response = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/auth/email-confirmation`, {
+        const response = await fetch(`https://truthful-gift-3408f45803.strapiapp.com/api/auth/email-confirmation`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

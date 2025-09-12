@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers';
 
-const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL;
+const STRAPI_URL = 'https://truthful-gift-3408f45803.strapiapp.com';
 const API_TOKEN = process.env.STRAPI_API_TOKEN;
 
 export interface StrapiResponse<T> {

@@ -20,7 +20,7 @@ export default function SignInPage() {
     setError('');
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/auth/local`, {
+      const response = await fetch(`https://truthful-gift-3408f45803.strapiapp.com/api/auth/local`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

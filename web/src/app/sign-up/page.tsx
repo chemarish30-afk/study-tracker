@@ -36,7 +36,7 @@ export default function SignUpPage() {
     }
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/auth/local/register`, {
+      const response = await fetch(`https://truthful-gift-3408f45803.strapiapp.com/api/auth/local/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -45,7 +45,7 @@ export default function SignUpPage() {
           username: formData.username,
           email: formData.email,
           password: formData.password,
-          email_confirmation_redirection: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://your-netlify-site.netlify.app'}/auth/email-confirmation`
+          email_confirmation_redirection: `https://study-tracker-nextjs.netlify.app/auth/email-confirmation`
         }),
       });
 
