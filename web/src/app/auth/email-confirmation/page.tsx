@@ -44,20 +44,38 @@ export default function EmailConfirmationPage() {
           // Token might be in the URL path
           requestBody = { confirmation: possibleToken };
         } else {
+          // If no token is found, check if we can determine the user's status
+          console.log('No confirmation token found. Checking if account might already be confirmed...');
           setStatus('error');
-          setMessage('Invalid confirmation link. Please check your email and try again.');
+          setMessage('No confirmation token found in the link. Your account might already be confirmed. Try signing in below.');
           return;
         }
 
         console.log('Sending to Strapi:', requestBody);
 
-        const response = await fetch(`https://truthful-gift-3408f45803.strapiapp.com/api/auth/email-confirmation`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(requestBody),
-        });
+        // Try GET method first (Strapi might use GET for email confirmation)
+        let response;
+        try {
+          const url = new URL('https://truthful-gift-3408f45803.strapiapp.com/api/auth/email-confirmation');
+          Object.keys(requestBody).forEach(key => url.searchParams.append(key, requestBody[key]));
+          
+          console.log('Trying GET method with URL:', url.toString());
+          response = await fetch(url.toString(), {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+        } catch (error) {
+          console.log('GET method failed, trying POST method...');
+          response = await fetch(`https://truthful-gift-3408f45803.strapiapp.com/api/auth/email-confirmation`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(requestBody),
+          });
+        }
 
         const data = await response.json();
         console.log('Email confirmation response:', data);
