@@ -19,21 +19,27 @@ export default function SignInPage() {
     setLoading(true);
     setError('');
 
+    // Demo mode - check localStorage for demo user
     try {
-      const response = await fetch('/api/auth/sign-in', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        router.push('/welcome');
+      // Simulate API call delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      const demoUser = localStorage.getItem('demo_user');
+      const isLoggedIn = localStorage.getItem('demo_logged_in');
+      
+      if (demoUser && isLoggedIn === 'true') {
+        const userData = JSON.parse(demoUser);
+        
+        // Simple demo validation - just check if identifier matches stored email/username
+        if (formData.identifier === userData.email || formData.identifier === userData.username) {
+          // Set demo login flag
+          localStorage.setItem('demo_logged_in', 'true');
+          router.push('/welcome');
+        } else {
+          setError('Invalid credentials. Please sign up first or use the demo account.');
+        }
       } else {
-        setError(data.error || 'Sign in failed');
+        setError('No demo account found. Please sign up first.');
       }
     } catch {
       setError('An error occurred. Please try again.');
@@ -58,6 +64,11 @@ export default function SignInPage() {
               create a new account
             </Link>
           </p>
+          <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+            <div className="text-sm text-blue-800">
+              <strong>🎯 Demo Mode:</strong> Sign in with the email/username you used during sign-up.
+            </div>
+          </div>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           {error && (

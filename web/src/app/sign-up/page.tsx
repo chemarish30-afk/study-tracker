@@ -33,27 +33,24 @@ export default function SignUpPage() {
       return;
     }
 
+    // Demo mode - simulate successful signup
     try {
-      const response = await fetch('/api/auth/sign-up', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username: formData.username,
-          email: formData.email,
-          password: formData.password,
-          confirmPassword: formData.confirmPassword,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        router.push('/welcome');
-      } else {
-        setError(data.error || 'Sign up failed');
-      }
+      // Simulate API call delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Store user data in localStorage for demo
+      const userData = {
+        username: formData.username,
+        email: formData.email,
+        id: Date.now().toString(),
+        createdAt: new Date().toISOString(),
+      };
+      
+      localStorage.setItem('demo_user', JSON.stringify(userData));
+      localStorage.setItem('demo_logged_in', 'true');
+      
+      // Redirect to welcome page
+      router.push('/welcome');
     } catch {
       setError('An error occurred. Please try again.');
     } finally {
@@ -77,6 +74,11 @@ export default function SignUpPage() {
               sign in to your existing account
             </Link>
           </p>
+          <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+            <div className="text-sm text-blue-800">
+              <strong>🎯 Demo Mode:</strong> This is a demonstration version. Your account will be stored locally for testing purposes.
+            </div>
+          </div>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           {error && (
