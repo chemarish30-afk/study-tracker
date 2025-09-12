@@ -5,6 +5,7 @@ module.exports = ({ env }) => ({
       providerOptions: {
         host: env('SMTP_HOST', 'smtp.resend.com'),
         port: env('SMTP_PORT', 587),
+        secure: false,
         auth: {
           user: env('SMTP_USER', 'resend'),
           pass: env('SMTP_PASSWORD', env('RESEND_API_KEY')),
