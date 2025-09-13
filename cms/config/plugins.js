@@ -4,16 +4,16 @@ module.exports = ({ env }) => ({
       provider: 'nodemailer',
       providerOptions: {
         host: env('SMTP_HOST', 'smtp.resend.com'),
-        port: env('SMTP_PORT', 587),
-        secure: false,
+        port: Number(env('SMTP_PORT', 587)),
+        secure: false, // STARTTLS on 587
         auth: {
           user: env('SMTP_USER', 'resend'),
-          pass: env('SMTP_PASSWORD', env('RESEND_API_KEY')),
+          pass: env('SMTP_PASSWORD'), // Resend API key
         },
       },
       settings: {
-        defaultFrom: env('RESEND_FROM_EMAIL', 'your_verified_email@domain.com'),
-        defaultReplyTo: env('RESEND_FROM_EMAIL', 'your_verified_email@domain.com'),
+        defaultFrom: env('RESEND_FROM_EMAIL'),
+        defaultReplyTo: env('RESEND_FROM_EMAIL'),
       },
     },
   },
