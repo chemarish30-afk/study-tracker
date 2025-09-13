@@ -63,7 +63,7 @@ export default function SignInPage() {
           <p className="mt-2 text-center text-sm text-gray-600">
             Or{' '}
             <Link
-              href="/sign-up"
+              href="/auth/sign-up"
               className="font-medium text-blue-600 hover:text-blue-500"
             >
               create a new account
@@ -112,7 +112,7 @@ export default function SignInPage() {
           <div className="flex items-center justify-between">
             <div className="text-sm">
               <Link
-                href="/forgot-password"
+                href="/auth/forgot-password"
                 className="font-medium text-blue-600 hover:text-blue-500"
               >
                 Forgot your password?

@@ -1,29 +1,26 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 
 export default function EmailConfirmationPage() {
+  const searchParams = useSearchParams();
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
   const [message, setMessage] = useState('');
 
   useEffect(() => {
     const confirmEmail = async () => {
       try {
-        // Get URL parameters from window.location
-        const urlParams = new URLSearchParams(window.location.search);
-        const confirmation = urlParams.get('confirmation');
-        const code = urlParams.get('code');
+        // Get URL parameters using Next.js useSearchParams
+        const confirmation = searchParams.get('confirmation');
+        const code = searchParams.get('code');
         
         // Also check for other possible parameter names
-        const token = urlParams.get('token');
-        const hash = urlParams.get('hash');
-        const id = urlParams.get('id');
+        const token = searchParams.get('token');
+        const hash = searchParams.get('hash');
+        const id = searchParams.get('id');
 
-        console.log('Current URL:', window.location.href);
-        console.log('URL pathname:', window.location.pathname);
-        console.log('URL search:', window.location.search);
-        console.log('All URL params:', Object.fromEntries(urlParams.entries()));
         console.log('Email confirmation params:', { confirmation, code, token, hash, id });
 
         // Check if token is in the URL path (e.g., /auth/email-confirmation/TOKEN)
@@ -56,7 +53,7 @@ export default function EmailConfirmationPage() {
         // Try GET method first (Strapi might use GET for email confirmation)
         let response;
         try {
-          const url = new URL('https://truthful-gift-3408f45803.strapiapp.com/api/auth/email-confirmation');
+          const url = new URL(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/auth/email-confirmation`);
           Object.keys(requestBody).forEach(key => url.searchParams.append(key, requestBody[key]));
           
           console.log('Trying GET method with URL:', url.toString());
@@ -68,7 +65,7 @@ export default function EmailConfirmationPage() {
           });
         } catch (error) {
           console.log('GET method failed, trying POST method...');
-          response = await fetch(`https://truthful-gift-3408f45803.strapiapp.com/api/auth/email-confirmation`, {
+          response = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/auth/email-confirmation`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -95,7 +92,7 @@ export default function EmailConfirmationPage() {
     };
 
     confirmEmail();
-  }, []);
+  }, [searchParams]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
