@@ -14,7 +14,7 @@ module.exports = ({ env }) => ({
       },
       resetPassword: {
         enabled: true,
-        redirection: 'https://study-tracker-nextjs.netlify.app/auth/reset-password',
+        redirection: 'https://study-tracker-nextjs.netlify.app/auth/reset-password?code={code}',
       },
     },
   },
