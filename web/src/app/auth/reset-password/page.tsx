@@ -88,6 +88,7 @@ function ResetPasswordForm() {
       const data = await response.json();
       console.log('Reset password response:', data);
       console.log('Response status:', response.status);
+      console.log('Response headers:', Object.fromEntries(response.headers.entries()));
 
       if (response.ok) {
         setSuccess(true);
