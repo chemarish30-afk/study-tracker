@@ -1,26 +1,19 @@
-module.exports = ({ env }) => ({
+module.exports = () => ({
   email: {
     config: {
       provider: 'nodemailer',
       providerOptions: {
-        host: env('SMTP_HOST', 'smtp.resend.com'),
-        port: Number(env('SMTP_PORT', 587)),
+        host: process.env.SMTP_HOST || 'smtp.resend.com',
+        port: Number(process.env.SMTP_PORT || 587),
         secure: false, // STARTTLS on 587
         auth: {
-          user: env('SMTP_USER', 'resend'),
-          pass: env('SMTP_PASSWORD'), // Resend API key
+          user: process.env.SMTP_USER || 'resend',
+          pass: process.env.SMTP_PASSWORD, // Resend API key
         },
       },
       settings: {
-        defaultFrom: env('RESEND_FROM_EMAIL'),
-        defaultReplyTo: env('RESEND_FROM_EMAIL'),
-      },
-    },
-  },
-  'users-permissions': {
-    config: {
-      jwt: {
-        expiresIn: '7d',
+        defaultFrom: process.env.RESEND_FROM_EMAIL,
+        defaultReplyTo: process.env.RESEND_FROM_EMAIL,
       },
     },
   },
