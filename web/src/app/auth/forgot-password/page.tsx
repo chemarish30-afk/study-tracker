@@ -28,7 +28,7 @@ export default function ForgotPasswordPage() {
       console.log('Sending forgot password request to Strapi:', requestBody);
       console.log('Strapi URL:', process.env.NEXT_PUBLIC_STRAPI_URL);
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/auth/forgot-password`, {
+      const response = await fetch('https://truthful-gift-3408f45803.strapiapp.com/api/auth/forgot-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -77,7 +77,7 @@ function ResetPasswordForm() {
       console.log('Sending reset password request to Strapi:', requestBody);
       console.log('Strapi URL:', process.env.NEXT_PUBLIC_STRAPI_URL);
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/auth/reset-password`, {
+      const response = await fetch('https://truthful-gift-3408f45803.strapiapp.com/api/auth/reset-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
