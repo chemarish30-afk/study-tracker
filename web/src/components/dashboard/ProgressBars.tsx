@@ -66,7 +66,7 @@ export default function ProgressBars() {
   );
 
   return (
-    <div className="bg-white rounded-lg shadow p-6">
+    <div className="bg-white rounded-lg shadow p-6 rounded-t-none">
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-lg font-semibold text-gray-900">Module Progress</h3>
         <div className="text-right">
