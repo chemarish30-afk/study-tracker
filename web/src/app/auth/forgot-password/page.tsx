@@ -33,15 +33,26 @@ export default function ForgotPasswordPage() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Accept': 'application/json',
         },
+        mode: 'cors',
         body: JSON.stringify(requestBody),
       });
 
       console.log('Response received:', response);
-
-      const data = await response.json();
-      console.log('Forgot password response:', data);
       console.log('Response status:', response.status);
+      console.log('Response headers:', Object.fromEntries(response.headers.entries()));
+
+      let data;
+      try {
+        data = await response.json();
+        console.log('Forgot password response:', data);
+      } catch (jsonError) {
+        console.error('Error parsing JSON response:', jsonError);
+        const textResponse = await response.text();
+        console.log('Raw response text:', textResponse);
+        throw new Error(`Invalid JSON response: ${textResponse}`);
+      }
 
       if (response.ok) {
         setSuccess(true);
