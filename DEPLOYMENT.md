@@ -2,144 +2,105 @@
 
 This guide covers deploying the Study Tracker application to production.
 
-## 🚀 Vercel Deployment (Frontend)
+## 🚀 Netlify Deployment (Frontend)
 
 ### Prerequisites
 
-1. **Vercel Account**: Sign up at [vercel.com](https://vercel.com)
+1. **Netlify Account**: Sign up at [netlify.com](https://netlify.com)
 2. **GitHub Repository**: Your code should be in a GitHub repository
-3. **Environment Variables**: Prepare all required environment variables
+3. **GitHub Secrets**: Configure required secrets in your repository
 
 ### Setup Steps
 
-#### 1. Connect Repository to Vercel
+#### 1. Configure GitHub Secrets
 
-1. Go to [Vercel Dashboard](https://vercel.com/dashboard)
-2. Click "New Project"
-3. Import your GitHub repository
-4. Set the **Root Directory** to `web`
-5. Vercel will auto-detect Next.js framework
-
-#### 2. Configure Environment Variables
-
-In your Vercel project settings, add these environment variables:
+Add these secrets to your GitHub repository settings (Settings → Secrets and variables → Actions):
 
 ```env
-# Strapi Backend Configuration
-NEXT_PUBLIC_STRAPI_URL=https://your-strapi-instance.com
-STRAPI_API_TOKEN=your_optional_read_token
-REVALIDATE_SECRET=your_revalidate_secret
-
-# Email Configuration (same as CMS)
-RESEND_API_KEY=your_resend_api_key
-RESEND_FROM_EMAIL=your_verified_email@domain.com
-```
-
-#### 3. GitHub Actions Setup
-
-The repository includes a GitHub Actions workflow (`.github/workflows/deploy-web.yml`) that automatically deploys to Vercel on push to main branch.
-
-**Required GitHub Secrets:**
-
-Add these secrets to your GitHub repository settings:
-
-```env
-# Vercel Configuration
-VERCEL_TOKEN=your_vercel_token
-VERCEL_ORG_ID=your_vercel_org_id
-VERCEL_PROJECT_ID=your_vercel_project_id
+# Netlify Configuration
+NETLIFY_SITE_ID=599c5e9f-1822-49d1-80bf-d7088863107a
+NETLIFY_AUTH_TOKEN=nfp_EuELJgJG96dPxmDqCDDfQCYGCjkMoMrk70bc
 
 # Application Environment Variables
-NEXT_PUBLIC_STRAPI_URL=https://your-strapi-instance.com
-STRAPI_API_TOKEN=your_optional_read_token
-REVALIDATE_SECRET=your_revalidate_secret
-RESEND_API_KEY=your_resend_api_key
-RESEND_FROM_EMAIL=your_verified_email@domain.com
+NEXT_PUBLIC_STRAPI_URL=https://truthful-gift-3408f45803.strapiapp.com
 ```
 
-**How to get Vercel credentials:**
+#### 2. How to Add GitHub Secrets
 
-1. **VERCEL_TOKEN**: 
-   - Go to Vercel Dashboard → Settings → Tokens
-   - Create a new token with appropriate scope
+1. Go to your GitHub repository
+2. Click **Settings** → **Secrets and variables** → **Actions**
+3. Click **New repository secret**
+4. Add each secret with the exact name and value:
 
-2. **VERCEL_ORG_ID**:
-   - Go to Vercel Dashboard → Settings → General
-   - Copy the "Team ID" or "Personal Account ID"
+| Secret Name | Value | Description |
+|-------------|-------|-------------|
+| `NETLIFY_SITE_ID` | `599c5e9f-1822-49d1-80bf-d7088863107a` | Your Netlify site ID |
+| `NETLIFY_AUTH_TOKEN` | `nfp_EuELJgJG96dPxmDqCDDfQCYGCjkMoMrk70bc` | Your Netlify auth token |
+| `NEXT_PUBLIC_STRAPI_URL` | `https://truthful-gift-3408f45803.strapiapp.com` | Your Strapi backend URL |
 
-3. **VERCEL_PROJECT_ID**:
-   - Go to your project in Vercel Dashboard
-   - Copy the "Project ID" from Settings → General
-
-#### 4. Deploy
+#### 3. Deploy
 
 The deployment happens automatically when you:
 
 1. Push to the `main` branch
-2. The workflow will:
+2. The GitHub Actions workflow will:
    - Install dependencies
-   - Run linting
-   - Build the application
-   - Deploy to Vercel
+   - Build the Next.js application
+   - Deploy to Netlify
+   - Create preview deployments for pull requests
 
 ### Manual Deployment
 
-You can also deploy manually using Vercel CLI:
+You can also deploy manually using Netlify CLI:
 
 ```bash
-# Install Vercel CLI
-npm i -g vercel
+# Install Netlify CLI
+npm install -g netlify-cli
 
 # Navigate to web directory
 cd web
 
+# Build the application
+npm run build
+
 # Deploy
-vercel --prod
+netlify deploy --prod --dir=out
 ```
 
 ## 🗄️ Strapi Cloud Deployment (Backend)
 
-### Prerequisites
+### Current Setup
 
-1. **Strapi Cloud Account**: Sign up at [cloud.strapi.io](https://cloud.strapi.io)
-2. **PostgreSQL Database**: Set up a PostgreSQL database
-3. **Resend Account**: For email services
+Your Strapi CMS is already deployed on Strapi Cloud:
+- **URL**: `https://truthful-gift-3408f45803.strapiapp.com`
+- **Auto-deployment**: Enabled on push to main branch
+- **Base Directory**: `/cms`
 
-### Setup Steps
+### Environment Variables
 
-1. **Create Strapi Cloud Project**:
-   - Connect your GitHub repository
-   - Set **Base Directory** to `/cms`
-
-2. **Configure Environment Variables**:
-   ```env
-   APP_KEYS=key1,key2,key3,key4
-   API_TOKEN_SALT=your_random_salt
-   ADMIN_JWT_SECRET=your_admin_jwt_secret
-   JWT_SECRET=your_jwt_secret
-   TRANSFER_TOKEN_SALT=your_transfer_token_salt
-   DATABASE_URL=postgres://user:password@host:5432/dbname?sslmode=require
-   RESEND_API_KEY=your_resend_api_key
-   RESEND_FROM_EMAIL=your_verified_email@domain.com
-   SMTP_HOST=smtp.resend.com
-   SMTP_PORT=587
-   SMTP_USER=resend
-   SMTP_PASSWORD=your_resend_api_key
-   ```
-
-3. **Deploy**: Strapi Cloud will automatically deploy on push to main branch
+Your Strapi Cloud instance is configured with:
+```env
+APP_KEYS=key1,key2,key3,key4
+API_TOKEN_SALT=your_random_salt
+ADMIN_JWT_SECRET=your_admin_jwt_secret
+JWT_SECRET=your_jwt_secret
+TRANSFER_TOKEN_SALT=your_transfer_token_salt
+DATABASE_URL=postgres://user:password@host:5432/dbname?sslmode=require
+RESEND_API_KEY=your_resend_api_key
+RESEND_FROM_EMAIL=your_verified_email@domain.com
+SMTP_HOST=smtp.resend.com
+SMTP_PORT=587
+SMTP_USER=resend
+SMTP_PASSWORD=your_resend_api_key
+```
 
 ## 🔧 Environment Variables Reference
 
-### Frontend (Vercel)
+### Frontend (Netlify)
 
 | Variable | Description | Required | Example |
 |----------|-------------|----------|---------|
-| `NEXT_PUBLIC_STRAPI_URL` | Strapi backend URL | Yes | `https://your-strapi.vercel.app` |
-| `STRAPI_API_TOKEN` | Optional read token | No | `your_api_token` |
-| `REVALIDATE_SECRET` | Webhook revalidation secret | Yes | `your_secret_key` |
-| `RESEND_API_KEY` | Resend API key for emails | Yes | `re_123456789` |
-| `RESEND_FROM_EMAIL` | Verified sender email | Yes | `noreply@yourdomain.com` |
+| `NEXT_PUBLIC_STRAPI_URL` | Strapi backend URL | Yes | `https://truthful-gift-3408f45803.strapiapp.com` |
 
 ### Backend (Strapi Cloud)
 
@@ -179,9 +140,9 @@ vercel --prod
 
 ### Debugging
 
-1. **Check Vercel Function Logs**:
-   - Go to Vercel Dashboard → Functions tab
-   - View logs for API route errors
+1. **Check Netlify Function Logs**:
+   - Go to Netlify Dashboard → Functions tab
+   - View logs for any errors
 
 2. **Check Strapi Logs**:
    - Go to Strapi Cloud Dashboard
@@ -193,12 +154,12 @@ vercel --prod
 
 ## 📈 Performance Optimization
 
-### Frontend (Vercel)
+### Frontend (Netlify)
 
-- **ISR**: Incremental Static Regeneration for content
-- **Image Optimization**: Next.js automatic image optimization
-- **Edge Functions**: API routes run on edge for better performance
+- **Static Export**: Next.js static export for optimal performance
 - **CDN**: Global CDN for static assets
+- **Caching**: Optimized caching headers
+- **Image Optimization**: Unoptimized images for static export
 
 ### Backend (Strapi Cloud)
 
@@ -218,9 +179,9 @@ vercel --prod
 
 ## 📊 Monitoring
 
-### Vercel Analytics
+### Netlify Analytics
 
-- Enable Vercel Analytics for performance monitoring
+- Enable Netlify Analytics for performance monitoring
 - Monitor Core Web Vitals
 - Track user engagement
 
@@ -237,14 +198,15 @@ The GitHub Actions workflow provides:
 1. **Automated Testing**: Linting and build verification
 2. **Automatic Deployment**: Deploy on successful builds
 3. **Environment Management**: Proper environment variable handling
-4. **Rollback Capability**: Easy rollback through Vercel dashboard
+4. **Preview Deployments**: Automatic preview deployments for pull requests
+5. **Rollback Capability**: Easy rollback through Netlify dashboard
 
 ## 📝 Next Steps
 
 After successful deployment:
 
 1. **Set up custom domain** (optional)
-2. **Configure SSL certificates** (automatic with Vercel)
+2. **Configure SSL certificates** (automatic with Netlify)
 3. **Set up monitoring and alerting**
 4. **Configure backup strategies**
 5. **Set up staging environment** for testing
