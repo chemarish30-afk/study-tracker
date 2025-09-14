@@ -6,6 +6,28 @@
   NODE_VERSION = "18"
 
 # Handle client-side routing for Next.js static export
+# Specific routes first
+[[redirects]]
+  from = "/auth/reset-password"
+  to = "/reset-password/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/auth/forgot-password"
+  to = "/forgot-password/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/auth/signin"
+  to = "/signin/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/auth/signup"
+  to = "/signup/index.html"
+  status = 200
+
+# Catch-all for other routes
 [[redirects]]
   from = "/*"
   to = "/index.html"

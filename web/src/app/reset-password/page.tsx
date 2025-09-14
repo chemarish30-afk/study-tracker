@@ -22,8 +22,24 @@ function ResetPasswordForm() {
     console.log('Current URL:', window.location.href);
     console.log('Search params:', searchParams.toString());
     
-    // Get code from URL parameters
-    const code = searchParams.get('code');
+    // Get code from URL parameters - handle both normal and malformed URLs
+    let code = searchParams.get('code');
+    
+    // If no code found, try to extract from the URL directly (for malformed URLs)
+    if (!code) {
+      const urlParams = new URLSearchParams(window.location.search);
+      code = urlParams.get('code');
+    }
+    
+    // If still no code, try to extract from the hash or path
+    if (!code) {
+      const url = window.location.href;
+      const codeMatch = url.match(/code=([a-f0-9]+)/);
+      if (codeMatch) {
+        code = codeMatch[1];
+      }
+    }
+    
     console.log('Code from URL:', code);
     
     if (code) {
