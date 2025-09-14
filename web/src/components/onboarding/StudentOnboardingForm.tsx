@@ -79,6 +79,11 @@ export default function StudentOnboardingForm({ user, onSubmit }: StudentOnboard
           <p className="text-gray-600">
             Tell us about yourself to personalize your learning experience.
           </p>
+          <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+            <p className="text-sm text-yellow-800">
+              <strong>Note:</strong> If you encounter permission errors, the system will proceed with default settings.
+            </p>
+          </div>
         </div>
 
         {error && (

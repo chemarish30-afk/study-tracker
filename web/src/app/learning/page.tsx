@@ -161,6 +161,12 @@ export default function LearningPage() {
         setHasStudentProfile(true);
         setShowOnboarding(false);
         fetchSubjects();
+      } else if (response.status === 403) {
+        // Handle permission error - for now, skip profile creation and proceed to learning
+        console.warn('Permission denied for student profile creation. Proceeding without profile.');
+        setHasStudentProfile(true);
+        setShowOnboarding(false);
+        fetchSubjects();
       } else {
         console.error('API Error:', responseData);
         throw new Error(responseData.error?.message || 'Failed to create student profile');
