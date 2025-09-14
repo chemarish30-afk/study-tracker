@@ -65,7 +65,7 @@ export default function LearningPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [subjects, setSubjects] = useState<Subject[]>([]);
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
-  const [hasStudentProfile, setHasStudentProfile] = useState<boolean | null>(null);
+  const [, setHasStudentProfile] = useState<boolean | null>(null);
   const [showOnboarding, setShowOnboarding] = useState(false);
 
   useEffect(() => {
@@ -78,8 +78,32 @@ export default function LearningPage() {
       return;
     }
 
+    const checkStudentProfile = async () => {
+      try {
+        const response = await fetch('https://truthful-gift-3408f45803.strapiapp.com/api/students?filters[user][id][$eq]=' + user?.id, {
+          headers: {
+            'Authorization': `Bearer ${jwt}`,
+          },
+        });
+        const data = await response.json();
+        
+        if (data.data && data.data.length > 0) {
+          setHasStudentProfile(true);
+          fetchSubjects();
+        } else {
+          setHasStudentProfile(false);
+          setShowOnboarding(true);
+        }
+      } catch (error) {
+        console.error('Error checking student profile:', error);
+        setHasStudentProfile(false);
+        setShowOnboarding(true);
+      }
+    };
+
     try {
-      setUser(JSON.parse(userData));
+      const parsedUser = JSON.parse(userData);
+      setUser(parsedUser);
       checkStudentProfile();
     } catch (error) {
       console.error('Error parsing user data:', error);
@@ -89,31 +113,18 @@ export default function LearningPage() {
     }
   }, [router]);
 
-  const checkStudentProfile = async () => {
-    try {
-      const jwt = localStorage.getItem('jwt');
-      const response = await fetch('https://truthful-gift-3408f45803.strapiapp.com/api/students?filters[user][id][$eq]=' + user?.id, {
-        headers: {
-          'Authorization': `Bearer ${jwt}`,
-        },
-      });
-      const data = await response.json();
-      
-      if (data.data && data.data.length > 0) {
-        setHasStudentProfile(true);
-        fetchSubjects();
-      } else {
-        setHasStudentProfile(false);
-        setShowOnboarding(true);
-      }
-    } catch (error) {
-      console.error('Error checking student profile:', error);
-      setHasStudentProfile(false);
-      setShowOnboarding(true);
-    }
-  };
 
-  const handleOnboardingSubmit = async (formData: any) => {
+  const handleOnboardingSubmit = async (formData: {
+    name: string;
+    email: string;
+    mobile: string;
+    dob: string;
+    state: string;
+    district: string;
+    exam: 'UPSC' | 'TNPSC' | 'NEET';
+    targetYear: number;
+    otherInfo: string;
+  }) => {
     try {
       const jwt = localStorage.getItem('jwt');
       const response = await fetch('https://truthful-gift-3408f45803.strapiapp.com/api/students', {

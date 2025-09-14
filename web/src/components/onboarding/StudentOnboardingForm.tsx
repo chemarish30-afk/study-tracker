@@ -47,7 +47,7 @@ export default function StudentOnboardingForm({ user, onSubmit }: StudentOnboard
 
     try {
       await onSubmit(formData);
-    } catch (err) {
+    } catch {
       setError('Failed to create student profile. Please try again.');
     } finally {
       setLoading(false);
@@ -229,7 +229,7 @@ export default function StudentOnboardingForm({ user, onSubmit }: StudentOnboard
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Additional Information</h3>
             <div>
               <label htmlFor="otherInfo" className="block text-sm font-medium text-gray-700 mb-2">
-                Any other information you'd like to share?
+                Any other information you&apos;d like to share?
               </label>
               <textarea
                 id="otherInfo"
