@@ -23,6 +23,11 @@
   status = 200
 
 [[redirects]]
+  from = "/auth/login"
+  to = "/signin/"
+  status = 200
+
+[[redirects]]
   from = "/auth/signup"
   to = "/signup/"
   status = 200

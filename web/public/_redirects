@@ -1,5 +1,6 @@
 /auth/reset-password    /reset-password/    200
 /auth/forgot-password    /forgot-password/    200
 /auth/signin    /signin/    200
+/auth/login    /signin/    200
 /auth/signup    /signup/    200
 /*    /index.html   200
