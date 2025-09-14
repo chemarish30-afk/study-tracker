@@ -27,6 +27,7 @@ export default function ForgotPasswordPage() {
 
       console.log('Sending forgot password request to Strapi:', requestBody);
       console.log('Strapi URL:', process.env.NEXT_PUBLIC_STRAPI_URL);
+      console.log('Full URL:', 'https://truthful-gift-3408f45803.strapiapp.com/api/auth/forgot-password');
 
       const response = await fetch('https://truthful-gift-3408f45803.strapiapp.com/api/auth/forgot-password', {
         method: 'POST',
@@ -35,6 +36,8 @@ export default function ForgotPasswordPage() {
         },
         body: JSON.stringify(requestBody),
       });
+
+      console.log('Response received:', response);
 
       const data = await response.json();
       console.log('Forgot password response:', data);
@@ -48,7 +51,8 @@ export default function ForgotPasswordPage() {
       }
     } catch (error) {
       console.error('Forgot password error:', error);
-      setError('An error occurred. Please try again.');
+      console.error('Error details:', error.message);
+      setError(`Network error: ${error.message}. Please check your connection and try again.`);
     } finally {
       setLoading(false);
     }
