@@ -25,16 +25,39 @@ function ResetPasswordForm() {
     // Get code from URL parameters - handle both normal and malformed URLs
     let code = searchParams.get('code');
     
+    // If the code contains malformed data like "{code}?code=...", extract the actual code
+    if (code && code.includes('{code}')) {
+      const url = window.location.href;
+      // Look for the actual reset code (64+ character hex string)
+      const codeMatch = url.match(/code=([a-f0-9]{64,})/);
+      if (codeMatch) {
+        code = codeMatch[1];
+      } else {
+        code = null;
+      }
+    }
+    
     // If no code found, try to extract from the URL directly (for malformed URLs)
     if (!code) {
       const urlParams = new URLSearchParams(window.location.search);
       code = urlParams.get('code');
+      
+      // Clean up malformed code
+      if (code && code.includes('{code}')) {
+        const url = window.location.href;
+        const codeMatch = url.match(/code=([a-f0-9]{64,})/);
+        if (codeMatch) {
+          code = codeMatch[1];
+        } else {
+          code = null;
+        }
+      }
     }
     
-    // If still no code, try to extract from the hash or path
+    // If still no code, try to extract from the full URL
     if (!code) {
       const url = window.location.href;
-      const codeMatch = url.match(/code=([a-f0-9]+)/);
+      const codeMatch = url.match(/code=([a-f0-9]{64,})/);
       if (codeMatch) {
         code = codeMatch[1];
       }
@@ -68,6 +91,8 @@ function ResetPasswordForm() {
     }
 
     try {
+      console.log('Sending reset password request with data:', formData);
+      
       const response = await fetch('https://truthful-gift-3408f45803.strapiapp.com/api/auth/reset-password', {
         method: 'POST',
         headers: {
@@ -75,6 +100,8 @@ function ResetPasswordForm() {
         },
         body: JSON.stringify(formData),
       });
+      
+      console.log('Response status:', response.status);
 
       const data = await response.json();
 
