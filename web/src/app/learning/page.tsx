@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Sidebar from '@/components/layout/Sidebar';
+import StudentOnboardingForm from '@/components/onboarding/StudentOnboardingForm';
 
 interface User {
   id: number;
@@ -64,6 +65,8 @@ export default function LearningPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [subjects, setSubjects] = useState<Subject[]>([]);
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
+  const [hasStudentProfile, setHasStudentProfile] = useState<boolean | null>(null);
+  const [showOnboarding, setShowOnboarding] = useState(false);
 
   useEffect(() => {
     // Check if user is logged in
@@ -77,7 +80,7 @@ export default function LearningPage() {
 
     try {
       setUser(JSON.parse(userData));
-      fetchSubjects();
+      checkStudentProfile();
     } catch (error) {
       console.error('Error parsing user data:', error);
       router.push('/signin');
@@ -85,6 +88,60 @@ export default function LearningPage() {
       setLoading(false);
     }
   }, [router]);
+
+  const checkStudentProfile = async () => {
+    try {
+      const jwt = localStorage.getItem('jwt');
+      const response = await fetch('https://truthful-gift-3408f45803.strapiapp.com/api/students?filters[user][id][$eq]=' + user?.id, {
+        headers: {
+          'Authorization': `Bearer ${jwt}`,
+        },
+      });
+      const data = await response.json();
+      
+      if (data.data && data.data.length > 0) {
+        setHasStudentProfile(true);
+        fetchSubjects();
+      } else {
+        setHasStudentProfile(false);
+        setShowOnboarding(true);
+      }
+    } catch (error) {
+      console.error('Error checking student profile:', error);
+      setHasStudentProfile(false);
+      setShowOnboarding(true);
+    }
+  };
+
+  const handleOnboardingSubmit = async (formData: any) => {
+    try {
+      const jwt = localStorage.getItem('jwt');
+      const response = await fetch('https://truthful-gift-3408f45803.strapiapp.com/api/students', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${jwt}`,
+        },
+        body: JSON.stringify({
+          data: {
+            ...formData,
+            user: user?.id,
+          },
+        }),
+      });
+
+      if (response.ok) {
+        setHasStudentProfile(true);
+        setShowOnboarding(false);
+        fetchSubjects();
+      } else {
+        throw new Error('Failed to create student profile');
+      }
+    } catch (error) {
+      console.error('Error creating student profile:', error);
+      throw error;
+    }
+  };
 
   const fetchSubjects = async () => {
     try {
@@ -354,20 +411,31 @@ export default function LearningPage() {
         {/* Learning Content */}
         <main className="flex-1 p-4 sm:p-6 lg:p-8">
           <div className="w-full">
-            {/* Welcome Section */}
-            <div className="mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-2">
-                Choose Your Learning Path
-              </h2>
-              <p className="text-gray-600">
-                Explore subjects and start your learning journey.
-              </p>
-            </div>
+            {showOnboarding ? (
+              /* Onboarding Form */
+              <StudentOnboardingForm 
+                user={user} 
+                onSubmit={handleOnboardingSubmit}
+              />
+            ) : (
+              /* Learning Content */
+              <>
+                {/* Welcome Section */}
+                <div className="mb-8">
+                  <h2 className="text-3xl font-bold text-gray-900 mb-2">
+                    Choose Your Learning Path
+                  </h2>
+                  <p className="text-gray-600">
+                    Explore subjects and start your learning journey.
+                  </p>
+                </div>
 
-            {/* Subjects Hierarchy */}
-            <div className="space-y-4">
-              {subjects.map(renderSubject)}
-            </div>
+                {/* Subjects Hierarchy */}
+                <div className="space-y-4">
+                  {subjects.map(renderSubject)}
+                </div>
+              </>
+            )}
           </div>
         </main>
       </div>
