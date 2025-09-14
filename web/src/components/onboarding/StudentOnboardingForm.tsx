@@ -47,8 +47,9 @@ export default function StudentOnboardingForm({ user, onSubmit }: StudentOnboard
 
     try {
       await onSubmit(formData);
-    } catch {
-      setError('Failed to create student profile. Please try again.');
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to create student profile. Please try again.';
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }

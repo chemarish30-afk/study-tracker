@@ -78,32 +78,33 @@ export default function LearningPage() {
       return;
     }
 
-    const checkStudentProfile = async () => {
-      try {
-        const response = await fetch('https://truthful-gift-3408f45803.strapiapp.com/api/students?filters[user][id][$eq]=' + user?.id, {
-          headers: {
-            'Authorization': `Bearer ${jwt}`,
-          },
-        });
-        const data = await response.json();
-        
-        if (data.data && data.data.length > 0) {
-          setHasStudentProfile(true);
-          fetchSubjects();
-        } else {
-          setHasStudentProfile(false);
-          setShowOnboarding(true);
-        }
-      } catch (error) {
-        console.error('Error checking student profile:', error);
-        setHasStudentProfile(false);
-        setShowOnboarding(true);
-      }
-    };
-
     try {
       const parsedUser = JSON.parse(userData);
       setUser(parsedUser);
+      
+      const checkStudentProfile = async () => {
+        try {
+          const response = await fetch('https://truthful-gift-3408f45803.strapiapp.com/api/students?filters[user][id][$eq]=' + parsedUser.id, {
+            headers: {
+              'Authorization': `Bearer ${jwt}`,
+            },
+          });
+          const data = await response.json();
+          
+          if (data.data && data.data.length > 0) {
+            setHasStudentProfile(true);
+            fetchSubjects();
+          } else {
+            setHasStudentProfile(false);
+            setShowOnboarding(true);
+          }
+        } catch (error) {
+          console.error('Error checking student profile:', error);
+          setHasStudentProfile(false);
+          setShowOnboarding(true);
+        }
+      };
+      
       checkStudentProfile();
     } catch (error) {
       console.error('Error parsing user data:', error);
@@ -127,6 +128,9 @@ export default function LearningPage() {
   }) => {
     try {
       const jwt = localStorage.getItem('jwt');
+      console.log('Submitting student profile:', formData);
+      console.log('User ID:', user?.id);
+      
       const response = await fetch('https://truthful-gift-3408f45803.strapiapp.com/api/students', {
         method: 'POST',
         headers: {
@@ -135,18 +139,31 @@ export default function LearningPage() {
         },
         body: JSON.stringify({
           data: {
-            ...formData,
+            name: formData.name,
+            email: formData.email,
+            mobile: formData.mobile,
+            dob: formData.dob,
+            state: formData.state,
+            district: formData.district,
+            exam: formData.exam,
+            targetYear: formData.targetYear,
+            otherInfo: formData.otherInfo,
             user: user?.id,
           },
         }),
       });
+
+      console.log('Response status:', response.status);
+      const responseData = await response.json();
+      console.log('Response data:', responseData);
 
       if (response.ok) {
         setHasStudentProfile(true);
         setShowOnboarding(false);
         fetchSubjects();
       } else {
-        throw new Error('Failed to create student profile');
+        console.error('API Error:', responseData);
+        throw new Error(responseData.error?.message || 'Failed to create student profile');
       }
     } catch (error) {
       console.error('Error creating student profile:', error);
