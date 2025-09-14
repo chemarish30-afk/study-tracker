@@ -19,7 +19,7 @@ export default function SignInPage() {
     setError('');
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/auth/local`, {
+      const response = await fetch('https://truthful-gift-3408f45803.strapiapp.com/api/auth/local', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -36,7 +36,15 @@ export default function SignInPage() {
         // Redirect to dashboard
         router.push('/dashboard');
       } else {
-        setError(data.error?.message || data.message || 'Failed to sign in');
+        // Customize error message for invalid credentials
+        const errorMessage = data.error?.message || data.message || 'Failed to sign in';
+        if (errorMessage.toLowerCase().includes('invalid identifier') || 
+            errorMessage.toLowerCase().includes('invalid credentials') ||
+            response.status === 400) {
+          setError('Invalid username and password');
+        } else {
+          setError(errorMessage);
+        }
       }
     } catch {
       setError('An error occurred. Please try again.');

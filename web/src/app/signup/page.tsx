@@ -19,7 +19,7 @@ export default function SignUpPage() {
     setError('');
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/auth/local/register`, {
+      const response = await fetch('https://truthful-gift-3408f45803.strapiapp.com/api/auth/local/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
