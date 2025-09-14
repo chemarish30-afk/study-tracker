@@ -68,7 +68,7 @@ export default function StudyHours() {
 
       {/* Add new session */}
       <div className="mb-6 p-4 bg-gray-50 rounded-lg">
-        <h4 className="text-sm font-medium text-gray-900 mb-3">Log Today's Study</h4>
+        <h4 className="text-sm font-medium text-gray-900 mb-3">Log Today&apos;s Study</h4>
         <div className="flex gap-2">
           <input
             type="number"
