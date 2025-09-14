@@ -44,6 +44,9 @@ function ResetPasswordForm() {
     
     if (code) {
       setFormData(prev => ({ ...prev, code }));
+      console.log('Reset code set in form data:', code);
+    } else {
+      console.log('No reset code found in URL');
     }
   }, [searchParams]);
 
@@ -65,7 +68,7 @@ function ResetPasswordForm() {
     }
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL}/api/auth/reset-password`, {
+      const response = await fetch('https://truthful-gift-3408f45803.strapiapp.com/api/auth/reset-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

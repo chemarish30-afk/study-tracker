@@ -9,22 +9,22 @@
 # Specific routes first
 [[redirects]]
   from = "/auth/reset-password"
-  to = "/reset-password/index.html"
+  to = "/reset-password/"
   status = 200
 
 [[redirects]]
   from = "/auth/forgot-password"
-  to = "/forgot-password/index.html"
+  to = "/forgot-password/"
   status = 200
 
 [[redirects]]
   from = "/auth/signin"
-  to = "/signin/index.html"
+  to = "/signin/"
   status = 200
 
 [[redirects]]
   from = "/auth/signup"
-  to = "/signup/index.html"
+  to = "/signup/"
   status = 200
 
 # Catch-all for other routes
