@@ -17,8 +17,15 @@ function ResetPasswordForm() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    // Debug logging
+    console.log('ResetPasswordPage mounted');
+    console.log('Current URL:', window.location.href);
+    console.log('Search params:', searchParams.toString());
+    
     // Get code from URL parameters
     const code = searchParams.get('code');
+    console.log('Code from URL:', code);
+    
     if (code) {
       setFormData(prev => ({ ...prev, code }));
     }
