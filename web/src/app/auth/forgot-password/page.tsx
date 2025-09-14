@@ -62,8 +62,9 @@ export default function ForgotPasswordPage() {
       }
     } catch (error) {
       console.error('Forgot password error:', error);
-      console.error('Error details:', error.message);
-      setError(`Network error: ${error.message}. Please check your connection and try again.`);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      console.error('Error details:', errorMessage);
+      setError(`Network error: ${errorMessage}. Please check your connection and try again.`);
     } finally {
       setLoading(false);
     }
