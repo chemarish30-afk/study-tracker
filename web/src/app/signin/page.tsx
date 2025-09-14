@@ -2,10 +2,10 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useAuth } from '@/lib/auth/auth-context';
 
 export default function SignInPage() {
-  const router = useRouter();
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
     identifier: '',
     password: '',
@@ -29,13 +29,12 @@ export default function SignInPage() {
 
       const data = await response.json();
 
-      if (response.ok) {
-        // Store JWT token in localStorage
-        localStorage.setItem('jwt', data.jwt);
-        localStorage.setItem('user', JSON.stringify(data.user));
-        // Redirect to dashboard
-        router.push('/dashboard');
-      } else {
+            if (response.ok) {
+              // Store JWT token in localStorage
+              localStorage.setItem('jwt', data.jwt);
+              // Login user through auth context
+              login(data.user);
+            } else {
         // Customize error message for invalid credentials
         const errorMessage = data.error?.message || data.message || 'Failed to sign in';
         if (errorMessage.toLowerCase().includes('invalid identifier') || 

@@ -1,50 +1,17 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { useAuth } from '@/lib/auth/auth-context';
 import Sidebar from '@/components/layout/Sidebar';
 import TodoList from '@/components/dashboard/TodoList';
 import ProgressBars from '@/components/dashboard/ProgressBars';
 import StudyHours from '@/components/dashboard/StudyHours';
 import ExamCountdown from '@/components/dashboard/ExamCountdown';
 
-interface User {
-  id: number;
-  username: string;
-  email: string;
-}
-
 export default function DashboardPage() {
-  const router = useRouter();
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { user, studentId, allowedExamCourseIds, loading, logout } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  useEffect(() => {
-    // Check if user is logged in
-    const jwt = localStorage.getItem('jwt');
-    const userData = localStorage.getItem('user');
-
-    if (!jwt || !userData) {
-      router.push('/signin');
-      return;
-    }
-
-    try {
-      setUser(JSON.parse(userData));
-    } catch (error) {
-      console.error('Error parsing user data:', error);
-      router.push('/signin');
-    } finally {
-      setLoading(false);
-    }
-  }, [router]);
-
-  const handleLogout = () => {
-    localStorage.removeItem('jwt');
-    localStorage.removeItem('user');
-    router.push('/signin');
-  };
 
   if (loading) {
     return (
@@ -55,7 +22,7 @@ export default function DashboardPage() {
   }
 
   if (!user) {
-    return null; // Will redirect to signin
+    return null; // Will redirect to signin via AuthProvider
   }
 
   return (
@@ -83,7 +50,7 @@ export default function DashboardPage() {
               <div className="flex items-center space-x-4">
                 <span className="text-gray-700 hidden sm:block">Welcome, {user.username}!</span>
                 <button
-                  onClick={handleLogout}
+                  onClick={logout}
                   className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium"
                 >
                   Logout
