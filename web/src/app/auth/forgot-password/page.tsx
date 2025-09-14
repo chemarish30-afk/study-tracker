@@ -22,8 +22,7 @@ export default function ForgotPasswordPage() {
 
     try {
       const requestBody = {
-        email: formData.email,
-        url: 'https://study-tracker-nextjs.netlify.app/auth/reset-password'
+        email: formData.email
       };
 
       console.log('Sending forgot password request to Strapi:', requestBody);
