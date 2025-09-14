@@ -59,15 +59,15 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
+    <div className="min-h-screen bg-gray-50">
       {/* Sidebar */}
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
       {/* Main content */}
-      <div className="flex-1 flex flex-col lg:ml-64">
+      <div className="flex-1 flex flex-col">
         {/* Header */}
         <header className="bg-white shadow">
-          <div className="px-4 sm:px-6 lg:px-8">
+          <div className="px-4 sm:px-6 lg:px-8 w-full">
             <div className="flex justify-between items-center py-4">
               <div className="flex items-center">
                 <button
@@ -95,7 +95,7 @@ export default function DashboardPage() {
 
         {/* Dashboard Content */}
         <main className="flex-1 p-4 sm:p-6 lg:p-8">
-          <div className="max-w-7xl mx-auto">
+          <div className="w-full">
             {/* Welcome Section */}
             <div className="mb-8">
               <h2 className="text-3xl font-bold text-gray-900 mb-2">

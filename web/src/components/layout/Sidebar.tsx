@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useState, useEffect } from 'react';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -10,6 +11,12 @@ interface SidebarProps {
 
 export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const pathname = usePathname();
+  const [isHovered, setIsHovered] = useState(false);
+
+  // Auto-collapse when page changes
+  useEffect(() => {
+    onClose();
+  }, [pathname, onClose]);
 
   const menuItems = [
     {
@@ -80,11 +87,20 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
         />
       )}
 
+      {/* Hover trigger area */}
+      <div
+        className="fixed inset-y-0 left-0 w-4 z-40 lg:block hidden"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      />
+
       {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 z-30 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 ${
-          isOpen ? 'translate-x-0' : '-translate-x-full'
+        className={`fixed inset-y-0 left-0 z-30 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out ${
+          isOpen || isHovered ? 'translate-x-0' : '-translate-x-full'
         }`}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
       >
         <div className="flex items-center justify-between h-16 px-6 border-b border-gray-200">
           <h2 className="text-xl font-semibold text-gray-900">Study Tracker</h2>
