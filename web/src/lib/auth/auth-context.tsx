@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
-import { authResolver, AuthResolution } from './auth-resolver';
+import { authResolver } from './auth-resolver';
 
 interface User {
   id: number;
@@ -137,7 +137,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     };
 
     initializeAuth();
-  }, [router]);
+  }, [router, logout]);
 
   const value: AuthContextType = {
     user,

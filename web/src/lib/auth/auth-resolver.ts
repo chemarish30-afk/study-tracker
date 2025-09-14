@@ -17,7 +17,7 @@ interface Enrollment {
   exam_course: ExamCourse;
 }
 
-interface AuthResolution {
+export interface AuthResolution {
   studentId: number | null;
   allowedExamCourseIds: number[];
   redirectTo: 'onboarding' | 'choose-exam' | 'dashboard';

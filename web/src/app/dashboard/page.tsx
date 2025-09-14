@@ -9,7 +9,7 @@ import StudyHours from '@/components/dashboard/StudyHours';
 import ExamCountdown from '@/components/dashboard/ExamCountdown';
 
 export default function DashboardPage() {
-  const { user, studentId, allowedExamCourseIds, loading, logout } = useAuth();
+  const { user, loading, logout } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
 
