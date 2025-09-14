@@ -102,7 +102,7 @@ export default function ExamCountdown() {
   const nextExam = getNextExam();
 
   return (
-    <div className="bg-white rounded-lg shadow p-6 rounded-b-none">
+    <div className="bg-white rounded-lg shadow p-6 border border-gray-200">
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-lg font-semibold text-gray-900">Exam Countdown</h3>
         <div className="text-right">

@@ -106,32 +106,26 @@ export default function DashboardPage() {
               </p>
             </div>
 
-            {/* Dashboard Grid - Two Columns */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* Left Column */}
-              <div className="space-y-0">
-                {/* Todo List */}
-                <div className="animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
-                  <TodoList />
-                </div>
-                
-                {/* Progress Bars */}
-                <div className="animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
-                  <ProgressBars />
-                </div>
+            {/* Dashboard Grid - Four Components */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              {/* Todo List */}
+              <div className="animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
+                <TodoList />
               </div>
-
-              {/* Right Column */}
-              <div className="space-y-0">
-                {/* Exam Countdown */}
-                <div className="animate-fade-in-up" style={{ animationDelay: '0.5s' }}>
-                  <ExamCountdown />
-                </div>
-                
-                {/* Study Hours */}
-                <div className="animate-fade-in-up" style={{ animationDelay: '0.7s' }}>
-                  <StudyHours />
-                </div>
+              
+              {/* Exam Countdown */}
+              <div className="animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+                <ExamCountdown />
+              </div>
+              
+              {/* Progress Bars */}
+              <div className="animate-fade-in-up" style={{ animationDelay: '0.5s' }}>
+                <ProgressBars />
+              </div>
+              
+              {/* Study Hours */}
+              <div className="animate-fade-in-up" style={{ animationDelay: '0.7s' }}>
+                <StudyHours />
               </div>
             </div>
           </div>

@@ -57,7 +57,7 @@ export default function StudyHours() {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow p-6 rounded-t-none">
+    <div className="bg-white rounded-lg shadow p-6 border border-gray-200">
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-lg font-semibold text-gray-900">Study Hours</h3>
         <div className="text-right">
