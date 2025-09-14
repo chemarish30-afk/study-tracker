@@ -19,6 +19,8 @@ export default function SignInPage() {
     setError('');
 
     try {
+      console.log('Attempting sign in with:', { identifier: formData.identifier });
+      
       const response = await fetch('https://truthful-gift-3408f45803.strapiapp.com/api/auth/local', {
         method: 'POST',
         headers: {
@@ -27,16 +29,20 @@ export default function SignInPage() {
         body: JSON.stringify(formData),
       });
 
+      console.log('Response status:', response.status);
       const data = await response.json();
+      console.log('Response data:', data);
 
-            if (response.ok) {
-              // Store JWT token in localStorage
-              localStorage.setItem('jwt', data.jwt);
-              // Login user through auth context
-              login(data.user);
-            } else {
+      if (response.ok) {
+        // Store JWT token in localStorage
+        localStorage.setItem('jwt', data.jwt);
+        // Login user through auth context
+        login(data.user);
+      } else {
         // Customize error message for invalid credentials
         const errorMessage = data.error?.message || data.message || 'Failed to sign in';
+        console.error('Sign in error:', errorMessage);
+        
         if (errorMessage.toLowerCase().includes('invalid identifier') || 
             errorMessage.toLowerCase().includes('invalid credentials') ||
             response.status === 400) {
@@ -45,7 +51,8 @@ export default function SignInPage() {
           setError(errorMessage);
         }
       }
-    } catch {
+    } catch (error) {
+      console.error('Sign in catch error:', error);
       setError('An error occurred. Please try again.');
     } finally {
       setLoading(false);
